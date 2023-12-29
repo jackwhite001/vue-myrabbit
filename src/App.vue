@@ -5,23 +5,23 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink :to="{name: 'layout'}">首页</RouterLink>        
+        <RouterLink :to="{name:'login'}">登录</RouterLink>
       </nav>
     </div>
-    <div>
-      <el-button type="primary">Primary</el-button>
+    <div class="test">
+      test color
     </div>
   </header>
-
   <RouterView />
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.test{
+  color: $priceColor;
+}
 header {
   line-height: 1.5;
   max-height: 100vh;
