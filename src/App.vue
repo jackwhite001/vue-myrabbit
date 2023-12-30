@@ -11,9 +11,6 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink :to="{name:'login'}">登录</RouterLink>
       </nav>
     </div>
-    <div class="test">
-      test color
-    </div>
   </header>
   <RouterView />
 </template>
