@@ -27,7 +27,7 @@ const reqData = ref({
 })
 const getGoodList = async ()=>{
   const res = await getSubCategoryAPI(reqData.value)
-  console.log(res.result);
+  // console.log(res.result);
   goodList.value = res.result.items
 }
 
