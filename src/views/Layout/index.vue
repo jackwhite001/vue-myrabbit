@@ -16,7 +16,6 @@ import LayoutHeader from './components/LayoutHeader.vue'
 import LayoutFooter from './components/LayoutFooter.vue'
 import LayoutFixed from './components/LayoutFixed.vue'
 import Home from '@/views/Home/index.vue'
-1
 // 触发获取导航列表的 action 
 import { useCategoryStore } from '@/stores/category'
 import { storeToRefs } from 'pinia'

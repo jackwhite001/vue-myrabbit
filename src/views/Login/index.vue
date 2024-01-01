@@ -2,13 +2,13 @@
 import { ref } from "vue"
 import 'element-plus/theme-chalk/el-message.css'
 import { ElMessage } from 'element-plus'
-import {loginAPI} from '@/apis/user'
 import { useRouter } from "vue-router";
+import {useUserStore} from '@/stores/user'
 // 表单校验 （账户名+密码）
 // 1、准备表单对象
 const form = ref({
-  account: '',
-  password: '',
+  account: 'xiaotuxian001',
+  password: '123456',
   agree: true
 })
 // 2、准备规则对象
@@ -39,7 +39,7 @@ const rules = ref({
 // 3、获取form实例做统一校验
 const formRef = ref(null)
 const router = useRouter()
-
+const userStore = useUserStore()
 const doLogin = ()=>{
   // 获取账号密码
   const { account,password } = form.value
@@ -50,7 +50,7 @@ const doLogin = ()=>{
     // 以valid作为判断条件，如果通过校验才执行登录逻辑
     if(valid){
       // TODO LOGIN
-      const res = await loginAPI({account,password})
+      await userStore.getUserInfo({ account,password })
       // console.log(res);
       // 1、提示用户登录成功
       ElMessage({ type: 'success', message: '登录成功' })
