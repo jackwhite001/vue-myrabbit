@@ -7,8 +7,8 @@ import { RouterLink, RouterView } from 'vue-router'
   <header>
     <div class="wrapper">
       <nav>
-        <RouterLink :to="{name: 'layout'}">首页</RouterLink>        
-        <RouterLink :to="{name:'login'}">登录</RouterLink>
+        <!-- <RouterLink :to="{name: 'layout'}">首页</RouterLink>        
+        <RouterLink :to="{name:'login'}">登录</RouterLink> -->
       </nav>
     </div>
   </header>

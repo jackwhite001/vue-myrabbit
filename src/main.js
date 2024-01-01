@@ -15,12 +15,13 @@ getCategory().then(res=>{
 }) */
 // 引入懒加载指令插件并且注册
 import { lazyPlugin } from '@/directives'
-
+import { componentPlugin } from '@/components'
 const app = createApp(App)
 const pinia = createPinia()
 app.use(ElementPlus) //插件式全局注册
 app.use(pinia)
 app.use(router)
 app.use(lazyPlugin)
+app.use(componentPlugin)
 app.mount('#app')
 
