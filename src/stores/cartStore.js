@@ -50,13 +50,29 @@ export const useCartStore = defineStore('cart',()=>{
   const allCount = computed(()=>cartList.value.reduce((pre,cur)=>pre + cur.count,0))
   // 2、总价 所有项的count * price之和
   const allPrice = computed(()=>cartList.value.reduce((pre,cur)=>pre + cur.count * cur.price,0))
+  // 3、已选商品数量计算选中商品的数量 
+  const selectedCount = computed(()=>cartList.value.filter((item)=>item.selected).reduce((pre,cur)=>pre + cur.count,0))
+  // 4、已选商品的总价格
+  const selectedPrice = computed(()=>cartList.value.filter((item)=>item.selected).reduce((pre,cur)=>pre + cur.count * cur.price,0))
+
+  // 全选框 将所有的 selected 状态都变为 true
+  const allCheck = (selected)=>{
+   return cartList.value.filter((item)=>item.selected = selected)
+  }
+  // 单选框操作 selected  只要有一项不为true 全选状态消失
+  const isAll = computed(()=>cartList.value.every((item)=> item.selected))
+  
   return {
     cartList,
     addCart,
     delCart,
     allCount,
     allPrice,
-    singleCheck
+    selectedCount,
+    selectedPrice,
+    singleCheck,
+    isAll,
+    allCheck
   }
 },{
   persist: true,
