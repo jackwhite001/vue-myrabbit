@@ -1,43 +1,73 @@
 // 封装购物车模块
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-
+import { useUserStore } from "./user";
+import { insertCartAPI } from "@/apis/cart,";
+import { findNewCartListAPI } from "@/apis/cart,";
+import { delCartAPI } from "@/apis/cart,";
 export const useCartStore = defineStore('cart',()=>{
+  const userStore = useUserStore()
+  const isLogin = computed(()=>userStore.userInfo.token)
   // 1、定义state --cartList
   const cartList = ref([])
   // 2、定义action -- addCart
-  const addCart = (goods)=>{
+  const addCart = async (goods)=>{
+    const { skuId,count } = goods
     // 添加购物车操作
-    // 已添加过 -count+1
-    // 没有添加过 - 直接push
-    // 思路：通过匹配传递过来的商品对象中的skuId 能不能在cartList中找到，找到了就是添加过
-    const item = cartList.value.find((item)=>goods.skuId === item.skuId)
-    if(item){
-      // 找到了
-      item.count++
+    if(isLogin.value){
+      // 登录后添加接口购物车
+      // 1、添加接口购物车      
+      await insertCartAPI({skuId,count})
+      // 获取最新数据并覆盖本地购物车
+      updateNewList()
     }else{
-      // 没找到？
-      cartList.value.push(goods)
+      // 没有登录 添加本地购物车
+      // 已添加过 -count+1
+      // 没有添加过 - 直接push
+      // 思路：通过匹配传递过来的商品对象中的skuId 能不能在cartList中找到，找到了就是添加过
+      const item = cartList.value.find((item)=>goods.skuId === item.skuId)
+      if(item){
+        // 找到了
+        item.count++
+      }else{
+        // 没找到？
+        cartList.value.push(goods)
+      }
     }
   }
   // 删除购物车数据
-  const delCart = (skuId)=>{
-    // 思路：
-    // 1、找到要删除项目的下标值- splice
-    // 2、使用数组的过滤方法 - filter
-    // splice删除
-    /*     
-    const idx = cartList.value.findIndex((item)=>skuId === item.skuId)
-    cartList.value.splice(idx,1) 
-    */
-    // filter过滤删除
-    cartList.value = cartList.value.filter((item)=>{
-      // console.log(item);
-      // if(item.skuId !== skuId){
-      //   return item         
-      // }
-      return item.skuId !== skuId
-    })
+  const delCart = async (skuId)=>{
+    if(isLogin.value){
+      // 登录状态下删除购物车列表
+      // 1、调用删除购物车接口
+      await delCartAPI([skuId])
+      // 获取最新数据并覆盖本地购物车
+      updateNewList()
+    }else{
+      // 思路：
+      // 1、找到要删除项目的下标值- splice
+      // 2、使用数组的过滤方法 - filter
+      // splice删除
+      /*     
+      const idx = cartList.value.findIndex((item)=>skuId === item.skuId)
+      cartList.value.splice(idx,1) 
+      */
+      // filter过滤删除
+      cartList.value = cartList.value.filter((item)=>{
+        // console.log(item);
+        // if(item.skuId !== skuId){
+        //   return item         
+        // }
+        return item.skuId !== skuId
+      })
+    }
+  }
+  // 获取最新购物车列表
+  const updateNewList = async () => {
+    // 2、调用获取购物车接口
+    const res = await findNewCartListAPI()
+    // 3、覆盖本地购物车列表
+    cartList.value = res.result
   }
   // 单选功能
   const singleCheck = (skuId,selected)=>{
