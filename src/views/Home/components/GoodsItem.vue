@@ -1,5 +1,5 @@
 <template>
-  <RouterLink to="/" class="goods-item">
+  <RouterLink @click="enterDetail" to="#" class="goods-item">
     <img :src="goods.picture" alt="" />
     <p class="name ellipsis">{{ goods.name }}</p>
     <p class="desc ellipsis">{{ goods.desc }}</p>
@@ -8,12 +8,22 @@
 </template>
 
 <script setup>
-defineProps({
-  goods: {
-    type: Object,
-    default: () => {}
-  }
+import { useRouter } from "vue-router"
+const props = defineProps({
+    goods: {
+      type: Object,
+      default: () => {}
+    }
 })
+
+const router = useRouter()
+const enterDetail = ()=>{
+  // console.log(rout);
+  router.push(`/detail/${props.goods.id}`)
+  // console.log(props.goods.id);
+  
+}
+
 </script>
 
 <style lang="scss" scoped>

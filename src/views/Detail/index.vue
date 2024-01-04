@@ -2,7 +2,7 @@
 import { getDetailAPI } from '@/apis/detail';
 import { ElMessage } from 'element-plus';
 import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute,onBeforeRouteUpdate  } from 'vue-router';
 import DetailHot from './components/DetailHot.vue';
 import { useCartStore } from '@/stores/cartStore';
 const route = useRoute()
@@ -45,6 +45,14 @@ const addCart = ()=>{
     ElMessage.warning('请选择规格')
   }
 }
+// 路径更改自动跳转
+onBeforeRouteUpdate(async (to,from,next)=>{
+  // console.log(to)
+  // getGoods()
+  const res = await getDetailAPI(to.params.id)
+  goods.value = res.result
+  next()
+})
 </script>
 
 <template>
@@ -92,7 +100,7 @@ const addCart = ()=>{
                 </li>
                 <li>
                   <p>品牌信息</p>
-                  <p>{{ goods.brand.name }}</p>
+                  <p>{{ goods.brand ?  goods.brand.name : `空` }}</p>
                   <p><i class="iconfont icon-dynamic-filling"></i>品牌主页</p>
                 </li>
               </ul>
