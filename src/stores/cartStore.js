@@ -1,7 +1,7 @@
 // 封装购物车模块
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { useUserStore } from "./user";
+import { useUserStore } from "./userStore";
 import { insertCartAPI } from "@/apis/cart,";
 import { findNewCartListAPI } from "@/apis/cart,";
 import { delCartAPI } from "@/apis/cart,";
@@ -69,6 +69,10 @@ export const useCartStore = defineStore('cart',()=>{
     // 3、覆盖本地购物车列表
     cartList.value = res.result
   }
+  // 清除购物车 
+  const clearCart = ()=>{
+    cartList.value = []
+  }
   // 单选功能
   const singleCheck = (skuId,selected)=>{
     // 通过skuId找到要修改的一项，然后把它的selected修改
@@ -102,7 +106,9 @@ export const useCartStore = defineStore('cart',()=>{
     selectedPrice,
     singleCheck,
     isAll,
-    allCheck
+    allCheck,
+    clearCart,
+    updateNewList
   }
 },{
   persist: true,
